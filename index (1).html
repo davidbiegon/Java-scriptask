@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Greenfield University - Registration</title>
+<style>
+  body{font-family:Arial,sans-serif;background:#FAF7F0;color:#2B2B2B;margin:0;padding:40px 20px;}
+  h1{color:#1B4332;text-align:center;}
+  p.intro{text-align:center;max-width:500px;margin:0 auto 30px;color:#555;}
+  button{background:#1B4332;color:#fff;border:none;padding:12px 22px;border-radius:6px;font-size:1rem;cursor:pointer;}
+  button:hover{background:#2D6A4F;}
+
+  /* Welcome popup (small, shows immediately) */
+  #welcomeBox{
+    display:flex; position:fixed; top:0; left:0; width:100%; height:100%;
+    background:rgba(0,0,0,0.5); align-items:center; justify-content:center; z-index:1000;
+  }
+  #welcomeBox .box{
+    background:#fff; padding:25px 30px; border-radius:10px;
+    text-align:center; max-width:300px; box-shadow:0 10px 30px rgba(0,0,0,0.3);
+  }
+  #welcomeBox .box p{margin:0 0 16px; font-size:1rem; color:#2B2B2B;}
+  #welcomeBox .box button{padding:8px 22px; font-size:0.9rem;}
+
+  /* Registration form - sits directly on the page, medium size */
+  #regCard{
+    background:#fff;
+    width:100%;
+    max-width:480px;
+    margin:0 auto;
+    border-radius:12px;
+    padding:32px 36px;
+    box-shadow:0 8px 24px rgba(0,0,0,0.12);
+    border:1px solid #E4DCC8;
+  }
+  #regCard h2{margin-top:0;color:#1B4332;text-align:center;}
+  #regCard label{display:block;margin-top:16px;font-weight:bold;font-size:0.9rem;}
+  #regCard input{
+    width:100%; padding:11px; margin-top:6px;
+    border:1px solid #ccc; border-radius:6px; box-sizing:border-box;
+    font-size:0.97rem;
+  }
+  #regCard .error{color:red;font-size:0.8rem;display:none;margin-top:4px;}
+  #regCard button[type="submit"]{width:100%; margin-top:24px; padding:13px; font-size:1rem;}
+  #successMsg{
+    display:none; background:#E8F3EC; color:#1B4332;
+    border:1px solid #1B4332; border-radius:6px;
+    padding:12px; margin-top:16px; font-size:0.9rem; text-align:center;
+  }
+</style>
+</head>
+<body>
+
+<!-- Welcome Popup (small, shows on page load) -->
+<div id="welcomeBox">
+  <div class="box">
+    <p>👋 Welcome to Greenfield University!</p>
+    <button onclick="document.getElementById('welcomeBox').style.display='none'">OK</button>
+  </div>
+</div>
+
+<h1>Greenfield University</h1>
+<p class="intro">Shape your future. World-class education, infinite possibilities. Register below to begin your application.</p>
+
+<!-- Registration Form (directly on the page, medium size) -->
+<div id="regCard">
+  <h2>Student Registration</h2>
+  <form id="regForm" onsubmit="return validateForm()">
+
+    <label for="name">Full Name</label>
+    <input type="text" id="name" placeholder="e.g. Aisha Wanjiru">
+    <span class="error" id="nameErr">Please enter your full name.</span>
+
+    <label for="email">Email Address</label>
+    <input type="email" id="email" placeholder="you@example.com">
+    <span class="error" id="emailErr">Please enter a valid email address.</span>
+
+    <label for="phone">Phone Number</label>
+    <input type="tel" id="phone" placeholder="e.g. 0700 000 000">
+    <span class="error" id="phoneErr">Please enter a valid phone number.</span>
+
+    <label for="password">Password</label>
+    <input type="password" id="password" placeholder="At least 8 characters">
+    <span class="error" id="passwordErr">Password must be at least 8 characters.</span>
+
+    <button type="submit">Register</button>
+    <div id="successMsg"></div>
+  </form>
+</div>
+
+<script>
+  function validateForm() {
+    var valid = true;
+
+    var name = document.getElementById('name').value.trim();
+    var email = document.getElementById('email').value.trim();
+    var phone = document.getElementById('phone').value.trim();
+    var password = document.getElementById('password').value;
+
+    // Name check
+    if (name.length < 2) {
+      document.getElementById('nameErr').style.display = 'block';
+      valid = false;
+    } else {
+      document.getElementById('nameErr').style.display = 'none';
+    }
+
+    // Email check
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      document.getElementById('emailErr').style.display = 'block';
+      valid = false;
+    } else {
+      document.getElementById('emailErr').style.display = 'none';
+    }
+
+    // Phone check (at least 7 digits)
+    var digitsOnly = phone.replace(/\D/g, '');
+    if (digitsOnly.length < 7) {
+      document.getElementById('phoneErr').style.display = 'block';
+      valid = false;
+    } else {
+      document.getElementById('phoneErr').style.display = 'none';
+    }
+
+    // Password check
+    if (password.length < 8) {
+      document.getElementById('passwordErr').style.display = 'block';
+      valid = false;
+    } else {
+      document.getElementById('passwordErr').style.display = 'none';
+    }
+
+    if (valid) {
+      var successMsg = document.getElementById('successMsg');
+      successMsg.textContent = 'Welcome, ' + name + '! Your registration was successful.';
+      successMsg.style.display = 'block';
+      document.getElementById('regForm').reset();
+    }
+
+    return false; // prevent page reload
+  }
+</script>
+
+</body>
+</html>
