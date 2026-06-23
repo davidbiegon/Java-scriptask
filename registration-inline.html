@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Greenfield University - Student Registration</title>
+<style>
+  body{font-family:Arial,sans-serif;background:#FAF7F0;color:#2B2B2B;margin:0;padding:40px;}
+  h1{color:#1B4332;}
+  button{background:#1B4332;color:#fff;border:none;padding:12px 22px;border-radius:6px;font-size:1rem;cursor:pointer;}
+  button:hover{background:#2D6A4F;}
+
+  /* Popup overlay */
+  #overlay{
+    position:fixed; top:0; left:0; width:100%; height:100%;
+    background:rgba(0,0,0,0.6);
+    display:flex; align-items:center; justify-content:center;
+    z-index:999;
+  }
+  /* Popup box */
+  #popup{
+    background:#fff; width:90%; max-width:400px;
+    border-radius:10px; padding:25px; box-shadow:0 10px 30px rgba(0,0,0,0.3);
+    position:relative;
+  }
+  #popup h2{margin-top:0;color:#1B4332;}
+  #popup label{display:block;margin-top:14px;font-weight:bold;font-size:0.9rem;}
+  #popup input{
+    width:100%; padding:9px; margin-top:5px;
+    border:1px solid #ccc; border-radius:5px; box-sizing:border-box;
+  }
+  #popup .error{color:red;font-size:0.8rem;display:none;}
+  #popup button{width:100%; margin-top:20px;}
+  #closeBtn{
+    position:absolute; top:10px; right:14px;
+    background:none; color:#888; font-size:1.3rem; padding:0; cursor:pointer;
+  }
+  #closeBtn:hover{background:none; color:#000;}
+</style>
+</head>
+<body>
+
+<h1>Greenfield University</h1>
+<p>Shape your future. World-class education, infinite possibilities.</p>
+<button onclick="document.getElementById('overlay').style.display='flex'">Open Registration Form</button>
+
+<!-- Popup -->
+<div id="overlay">
+  <div id="popup">
+    <button id="closeBtn" onclick="document.getElementById('overlay').style.display='none'">&times;</button>
+    <h2>Student Registration</h2>
+    <form id="regForm" onsubmit="return validateForm()">
+
+      <label for="name">Full Name</label>
+      <input type="text" id="name" placeholder="e.g. Aisha Wanjiru">
+      <span class="error" id="nameErr">Please enter your full name.</span>
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" placeholder="you@example.com">
+      <span class="error" id="emailErr">Please enter a valid email address.</span>
+
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" placeholder="e.g. 0700 000 000">
+      <span class="error" id="phoneErr">Please enter a valid phone number.</span>
+
+      <label for="password">Password</label>
+      <input type="password" id="password" placeholder="At least 8 characters">
+      <span class="error" id="passwordErr">Password must be at least 8 characters.</span>
+
+      <button type="submit">Register</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Show the popup automatically when the page loads or refreshes
+  window.onload = function () {
+    document.getElementById('overlay').style.display = 'flex';
+  };
+
+  function validateForm() {
+    var valid = true;
+
+    var name = document.getElementById('name').value.trim();
+    var email = document.getElementById('email').value.trim();
+    var phone = document.getElementById('phone').value.trim();
+    var password = document.getElementById('password').value;
+
+    // Name check
+    if (name.length < 2) {
+      document.getElementById('nameErr').style.display = 'block';
+      valid = false;
+    } else {
+      document.getElementById('nameErr').style.display = 'none';
+    }
+
+    // Email check
+    var emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(email)) {
+      document.getElementById('emailErr').style.display = 'block';
+      valid = false;
+    } else {
+      document.getElementById('emailErr').style.display = 'none';
+    }
+
+    // Phone check (at least 7 digits)
+    var digitsOnly = phone.replace(/\D/g, '');
+    if (digitsOnly.length < 7) {
+      document.getElementById('phoneErr').style.display = 'block';
+      valid = false;
+    } else {
+      document.getElementById('phoneErr').style.display = 'none';
+    }
+
+    // Password check
+    if (password.length < 8) {
+      document.getElementById('passwordErr').style.display = 'block';
+      valid = false;
+    } else {
+      document.getElementById('passwordErr').style.display = 'none';
+    }
+
+    if (valid) {
+      alert('Registration successful! Welcome, ' + name + '.');
+      document.getElementById('regForm').reset();
+      document.getElementById('overlay').style.display = 'none';
+    }
+
+    return false; // prevent page reload
+  }
+</script>
+
+</body>
+</html>
